@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini AI Assistant</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🤖 Gemini AI Assistant</h1>
+
+    <form action="/clear" method="POST">
+    <button type="submit">🗑 Clear Chat</button>
+</form>
+
+    <div class="chat-box">
+
+        {% if conversation %}
+
+            {% for chat in conversation %}
+
+                {% if chat.role == "User" %}
+
+                <div class="user">
+                    <strong>You:</strong><br>
+                    {{ chat.text }}
+                </div>
+
+                {% else %}
+
+                <div class="assistant">
+                    <strong>Assistant:</strong><br>
+                    {{ chat.text }}
+                </div>
+
+                {% endif %}
+
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+
+    <form method="POST">
+
+        <textarea
+            name="message"
+            rows="4"
+            placeholder="Ask anything..."
+            required></textarea>
+
+        <button type="submit">
+            Send
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
