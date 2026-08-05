@@ -3,22 +3,27 @@ import requests
 
 def get_bitcoin_price():
 
-    url = "https://api.coincap.io/v2/assets/bitcoin"
+    url = "https://min-api.cryptocompare.com/data/price"
+
+    params = {
+        "fsym": "BTC",
+        "tsyms": "USD,INR"
+    }
 
     try:
 
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, params=params, timeout=10)
 
         response.raise_for_status()
 
         data = response.json()
 
-        usd = float(data["data"]["priceUsd"])
-
         return f"""
 Current Bitcoin Price
 
-USD : ${usd:,.2f}
+USD : ${data['USD']}
+
+INR : ₹{data['INR']}
 """
 
     except Exception as e:
