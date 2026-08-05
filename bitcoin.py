@@ -1,13 +1,17 @@
 import requests
 
+from config import ALPHA_VANTAGE_API_KEY
+
 
 def get_bitcoin_price():
 
-    url = "https://min-api.cryptocompare.com/data/price"
+    url = "https://www.alphavantage.co/query"
 
     params = {
-        "fsym": "BTC",
-        "tsyms": "USD,INR"
+        "function": "CURRENCY_EXCHANGE_RATE",
+        "from_currency": "BTC",
+        "to_currency": "USD",
+        "apikey": ALPHA_VANTAGE_API_KEY
     }
 
     try:
@@ -18,12 +22,17 @@ def get_bitcoin_price():
 
         data = response.json()
 
+        if "Realtime Currency Exchange Rate" not in data:
+            return f"API Error: {data}"
+
+        exchange = data["Realtime Currency Exchange Rate"]
+
+        price = exchange["5. Exchange Rate"]
+
         return f"""
 Current Bitcoin Price
 
-USD : ${data['USD']}
-
-INR : ₹{data['INR']}
+USD : ${float(price):,.2f}
 """
 
     except Exception as e:
