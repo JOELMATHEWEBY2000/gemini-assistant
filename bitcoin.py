@@ -3,21 +3,17 @@ import requests
 
 def get_bitcoin_price():
 
-    url = "https://api.binance.com/api/v3/ticker/price"
-
-    params = {
-        "symbol": "BTCUSDT"
-    }
+    url = "https://api.coincap.io/v2/assets/bitcoin"
 
     try:
 
-        response = requests.get(url, params=params, timeout=10)
+        response = requests.get(url, timeout=10)
 
         response.raise_for_status()
 
         data = response.json()
 
-        usd = float(data["price"])
+        usd = float(data["data"]["priceUsd"])
 
         return f"""
 Current Bitcoin Price
