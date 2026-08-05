@@ -3,11 +3,10 @@ import requests
 
 def get_bitcoin_price():
 
-    url = "https://api.coingecko.com/api/v3/simple/price"
+    url = "https://api.binance.com/api/v3/ticker/price"
 
     params = {
-        "ids": "bitcoin",
-        "vs_currencies": "usd,inr"
+        "symbol": "BTCUSDT"
     }
 
     try:
@@ -18,26 +17,14 @@ def get_bitcoin_price():
 
         data = response.json()
 
-        print(data)      # Check Render logs
-
-        if "bitcoin" not in data:
-            return f"CoinGecko API Error: {data}"
-
-        usd = data["bitcoin"].get("usd", "N/A")
-        inr = data["bitcoin"].get("inr", "N/A")
+        usd = float(data["price"])
 
         return f"""
 Current Bitcoin Price
 
-USD : ${usd}
-
-INR : ₹{inr}
+USD : ${usd:,.2f}
 """
-
-    except requests.exceptions.RequestException as e:
-
-        return f"Network Error: {e}"
 
     except Exception as e:
 
-        return f"Error: {e}"
+        return f"Bitcoin API Error: {e}"
